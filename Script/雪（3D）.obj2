@@ -34,7 +34,7 @@
 --track@psize:粒径,0.1,400,8,0.1
 --track@size_var:大きさのばらつき,0,100,50,1
 --figure@fig:図形,円
---track@soft:エッジのぼかし,0,100,0,1
+--track@soft:エッジのぼかし,0,100,100,1
 --color@snow_color:雪の色,0xffffff
 --group
 
@@ -353,7 +353,7 @@ if P.size < 0.1 then P.size = 0.1 end
 P.size_var = size_var or 50
 P.fig = fig or "円"
 P.color = snow_color or 0xffffff
-P.soft = soft or 0
+P.soft = soft or 100
 P.vel_x = vel_x or 0
 P.vel_y = vel_y or 200
 P.vel_z = vel_z or 0
