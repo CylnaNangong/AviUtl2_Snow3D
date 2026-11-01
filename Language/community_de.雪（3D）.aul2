@@ -1,11 +1,11 @@
 ;===============================================================
-; Target: Schnee (3D) v1.22 (雪（3D）.obj2)
+; Target: Schnee (3D) v1.23 (雪（3D）.obj2)
 ; Language: Deutsch (Community Translation)
 ; Place this file in  C:\ProgramData\aviutl2\Language\\
 ;===============================================================
 
 [Language]
-Information=Schnee (3D) v1.22 Sprachpaket Deutsch (Community)
+Information=Schnee (3D) v1.23 Sprachpaket Deutsch (Community)
 SubLanguage=English
 
 [Effect]
@@ -69,8 +69,16 @@ SubLanguage=English
 ログに描画モードを出力=Rendermodus protokollieren
 乱数シード=Zufalls-Seed
 
+; --- 体積光連動 -> Volumenlicht-Kopplung ---
+体積光連動=Volumenlicht-Kopplung
+体積光に照らされる=Vom Volumenlicht beleuchtet
+受光の強さ=Lichtstärke-Reaktion
+光色の染まり=Lichtfarben-Färbung
+光束外・影の減光=Abdunklung im Schatten
+発光の広がり=Streulicht-Größe
+
 [Tips.雪（3D）]
-effect.name=Echte 3D-Partikel (Schnee, Blüten, Staub, Funken), die unter AviUtl2-Kamerasteuerung als kamerazugewandte Billboards gezeichnet werden.
+effect.name=Echte 3D-Partikel (Schnee, Blüten, Staub, Funken) als kamerazugewandte Billboards unter AviUtl2-Kamerasteuerung, inkl. 3D-Lichtfeld- & Schattenkopplung mit Volumenlicht (3D) v3.16+.
 粒子数=Anzahl der gleichzeitig im Bereich vorhandenen Partikel (1–4000).
 粒径=Durchmesser eines einzelnen Partikels in Pixeln.
 大きさのばらつき=Zufällige Schwankung der Partikelgröße (0–100 %).
@@ -111,3 +119,8 @@ effect.name=Echte 3D-Partikel (Schnee, Blüten, Staub, Funken), die unter AviUtl
 奥行き順に描画=Sortiert Partikel nach Kameratiefe von hinten nach vorn für saubere Halbtransparenz.
 ログに描画モードを出力=Protokolliert bei Moduswechsel den aktiven Rendermodus (soft-vertex / figure-texture / flat-circle) samt Partikel- und Vertexzahl.
 乱数シード=Zufalls-Seed zur Änderung der anfänglichen Partikelverteilung.
+体積光に照らされる=Empfängt das geteilte 3D-Lichtfeld von Volumenlicht (3D) v3.16+ in derselben Szene: Partikel im Lichtkegel leuchten auf und bleiben in 3D-/2D-Schlagschatten sowie hinter Vordergrundmasken unbeleuchtet.
+受光の強さ=Beleuchtungsstärke für Partikel im unverschatteten Volumenlicht (0–300 %, Standard 120 %).
+光色の染まり=Wie stark beleuchtete Partikel die lokale Strahlfarbe (inkl. Buntglas) annehmen (0–100 %).
+光束外・影の減光=Dunkelt Partikel außerhalb des Strahls und in 3D-/2D-Schatten bei aktivem Volumenlicht ab (0–100 %; 90–100 % für reine Tyndall-Staubpartikel).
+発光の広がり=Größenfaktor des Vorwärtsstreu-Halos beleuchteter Partikel (100–280 %, Standard 135 %).

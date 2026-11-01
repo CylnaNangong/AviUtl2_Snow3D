@@ -1,6 +1,6 @@
 # 雪（3D） / 3D Snow
 
-`雪（3D）.obj2 v1.22` &nbsp;|&nbsp; `AviUtl ExEdit2 v2.1.15+` &nbsp;|&nbsp; `MIT License` &nbsp;|&nbsp; プラグイン不要（純スクリプト）
+`雪（3D）.obj2 v1.23` &nbsp;|&nbsp; `AviUtl ExEdit2 v2.1.15+` &nbsp;|&nbsp; `MIT License` &nbsp;|&nbsp; プラグイン不要（純スクリプト）
 
 [简体中文](../README.md) | [English](README_en.md)
 
@@ -28,7 +28,7 @@ AviUtl2 の 3D カメラ空間に**本物の三次元降雪**をシミュレー�
 
 ## 3. 導入方法（`.au2pkg.zip` D&D 対応）
 
-1. **`Snow3D-v1.22.au2pkg.zip`** をダウンロード；
+1. **`Snow3D-v1.23.au2pkg.zip`** をダウンロード；
 2. zip を **AviUtl2 ウィンドウにドラッグ**するだけで導入完了；
 3. 手動導入：`Script/雪（3D）.obj2` と `Language/*.aul2` を `C:\ProgramData\aviutl2\Script\`・`Language\` へ。
 
@@ -47,7 +47,7 @@ AviUtl2 の 3D カメラ空間に**本物の三次元降雪**をシミュレー�
 |---|---|---|---|
 | 雪 | 粒子数 | 1–4000（400） | 画面内の雪数 |
 | 雪 | 粒径 / 大きさのばらつき | 0.1–400（8）/ 0–100（50） | サイズと分散 |
-| 雪 | エッジのぼかし / 雪の色 | 0–100（0）/ #ffffff | ソフトエッジと色 |
+| 雪 | エッジのぼかし / 雪の色 | 0–100（100）/ #ffffff | ソフトエッジと色 |
 | 運動 | 初速XYZ / 初速のばらつき | ±3000（0/200/0）/ 0–85（25） | 初速と分散 |
 | 運動 | 重力 / 風XYZ | ±5000（400）/ ±3000 | 外力 |
 | 運動 | 揺れ幅 / 揺れ速さ / 回転速度 | 30 / 2 / 90 | 揺れと回転 |
@@ -63,14 +63,21 @@ AviUtl2 の 3D カメラ空間に**本物の三次元降雪**をシミュレー�
 - 本スクリプトは 100% 公式 Lua API（`obj.drawpoly` 等）のみで動作し、ホスト内部構造へのアクセスやメモリ探針に依存しません——**公式更新で失效しません**。
 - 「体積光（3D）」「VolumetricFog3D」と同一シーンで併用可能（体積光 v3.07+ は雪レイヤーを遮蔽候補から自動除外）。
 
+## 体積光連動（v1.23）
+
+同一シーンの [VolumetricLight3D v3.16+](https://github.com/CylnaNangong/AviUtl2_VolumetricLight3D) と公式 `global` テーブル経由で `VL3DLF v3` 光場を共有します。光束内の雪に光色と輝きを与え、投影影や前景マスクに遮られると受光を停止します。複数光源、オブジェクトの 3D 変換、編集カメラ同期に対応。
+
+**体積光連動**を展開：体積光に照らされる（既定 true）、受光の強さ（0–300、既定 120）、光色の染まり（0–100、既定 85）、光束外・影の減光（0–100、既定 30）、発光の広がり（100–280、既定 135）。
+
+有効な光源がない場合は従来の雪描画を維持し、単体使用は引き続きプラグイン不要です。ログ：`OFF` 無効、`WAIT` 光場未公開、`IDLE` 撤回・期限切れ、`ON(N:M)` N 光源で M 粒子が受光。
+
 ## 7. 今後の展望（ロードマップ）
 
-- 姉妹作 [`VolumetricLight3D`](https://github.com/CylnaNangong/VolumetricLight3D)・[`VolumetricFog3D`](https://github.com/CylnaNangong/VolumetricFog3D) との `VL3DBridge` 経由の 3D 光学連動：**光束の中を舞う雪がリアルタイムに光の色で染まる**。
 - 雪片形状カスタマイズ（六角板・樹枝晶）、積雪・融解表現。
 
 ## 8. バグ報告・フィードバック
 
-- **[GitHub Issues](../../issues) が一番確実！**：スクリプト版数（「ログに出力」ON で `雪（3D）v1.22 ...`）・AviUtl ExEdit2 版数・再現手順・スクリーンショットを添えてください。
+- **[GitHub Issues](../../issues) が一番確実！**：スクリプト版数（「ログに出力」ON で `雪（3D）v1.23 ...`）・AviUtl ExEdit2 版数・再現手順・スクリーンショットを添えてください。
 - **Discord**：日本語 AviUtl2 情報共有サーバー **「AviUtl2の情報が知りたいだろって‼」**（[参加](https://discord.gg/8qzmGY5NgQ)）で **南宫若馨Cylna**（`@nangongerregtcylna`／作者本人）まで！
 
 ## 9. 作者・謝辞・ライセンス

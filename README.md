@@ -1,6 +1,6 @@
 # Snow3D / 雪（3D） / 3D Snow
 
-`雪（3D）.obj2 v1.22` &nbsp;|&nbsp; `AviUtl ExEdit2 v2.1.15+` &nbsp;|&nbsp; `MIT License` &nbsp;|&nbsp; 无插件依赖（纯脚本）
+`雪（3D）.obj2 v1.23` &nbsp;|&nbsp; `AviUtl ExEdit2 v2.1.15+` &nbsp;|&nbsp; `MIT License` &nbsp;|&nbsp; 无插件依赖（纯脚本）
 
 [English](docs/README_en.md) | [日本語](docs/README_ja.md)
 
@@ -28,7 +28,7 @@
 
 ## 3. 安装方法（支持 `.au2pkg.zip` 拖入即装）
 
-1. 下载 **`Snow3D-v1.22.au2pkg.zip`**；
+1. 下载 **`Snow3D-v1.23.au2pkg.zip`**；
 2. 把 zip **直接拖进 AviUtl2 窗口**即可完成安装；
 3. 手动安装：将 `Script/雪（3D）.obj2` 与 `Language/*.aul2` 分别放入 `C:\ProgramData\aviutl2\Script\` 与 `C:\ProgramData\aviutl2\Language\`。
 
@@ -48,7 +48,7 @@
 | 雪 | 粒子数 | 1–4000（400） | 同屏雪花数量 |
 | 雪 | 粒径 | 0.1–400（8） | 雪花基础尺寸 |
 | 雪 | 大きさのばらつき | 0–100（50） | 尺寸分散程度 |
-| 雪 | エッジのぼかし | 0–100（0） | 软边缘（近景景深感） |
+| 雪 | エッジのぼかし | 0–100（100） | 软边缘（近景景深感） |
 | 雪 | 雪の色 | —（#ffffff） | 雪花颜色 |
 | 运动 | 初速X/Y/Z | ±3000（0/200/0） | 初始速度 |
 | 运动 | 初速のばらつき | 0–85（25） | 初速分散 |
@@ -73,14 +73,29 @@
 - 本脚本 100% 基于官方 Lua API（`obj.drawpoly` 等），不访问宿主内部结构、不依赖内存探针——**官方更新不会导致失效**。
 - 与《体积光（3D）》《VolumetricFog3D》可在同一场景叠加使用（体积光 v3.07+ 会自动把雪图层排除出遮挡候选）。
 
+## 体积光联动（v1.23）
+
+与 [VolumetricLight3D v3.16+](https://github.com/CylnaNangong/AviUtl2_VolumetricLight3D) 配合，在同一场景中通过官方 `global` 表共享 `VL3DLF v3` 光场：雪花进入光束时受光染色，进入投影阴影或前景遮罩后停止受光。支持多光源、彩色光、对象三维变换及编辑相机同步。
+
+展开「体積光連動」分组：
+
+| 参数 | 范围（默认） | 用途 |
+|---|---|---|
+| 体積光に照らされる | true | 启用联动 |
+| 受光の強さ | 0–300（120） | 受光强度 |
+| 光色の染まり | 0–100（85） | 光色染色比例 |
+| 光束外・影の減光 | 0–100（30） | 光束外与阴影压暗 |
+| 発光の広がり | 100–280（135） | 光晕范围 |
+
+无活动光源时保持原有降雪路径，单独使用仍不需要插件。日志状态：`OFF` 为关闭，`WAIT` 为尚无光场发布，`IDLE` 为光场撤回或过期，`ON(N:M)` 为连接 N 个光源、照亮 M 个粒子。
+
 ## 7. 未来发展方向（Roadmap）
 
-- 与姊妹作 [`VolumetricLight3D`](https://github.com/CylnaNangong/VolumetricLight3D)、[`VolumetricFog3D`](https://github.com/CylnaNangong/VolumetricFog3D) 共享 `VL3DBridge` 三维光场：**让雪花飘入彩色光束时实时染上光色并获得受光高光**。
 - 雪花形状自定义（六角板/枝晶）、堆积与融化表现。
 
 ## 8. 问题反馈（Bug 报告途径）
 
-- **首选 [GitHub Issues](./issues)（最推荐！）**：请附上脚本版本（「ログに出力」开启后见日志 `雪（3D）v1.22 ...`）、AviUtl ExEdit2 版本、复现步骤与截图。
+- **首选 [GitHub Issues](./issues)（最推荐！）**：请附上脚本版本（「ログに出力」开启后见日志 `雪（3D）v1.23 ...`）、AviUtl ExEdit2 版本、复现步骤与截图。
 - **Discord 社区**：加入日文 AviUtl2 情报共享社区 **「AviUtl2の情報が知りたいだろって‼」**（[点击加入](https://discord.gg/8qzmGY5NgQ)），找 **南宫若馨Cylna**（`@nangongerregtcylna`，作者本人）直接反馈～
 
 ## 9. 作者、致谢与开源许可
@@ -88,3 +103,22 @@
 - **作者**：[南宫若馨Cylna](https://github.com/CylnaNangong)（[Bilibili](https://space.bilibili.com/81615223) ｜ [YouTube](https://www.youtube.com/@CylnaNangong) ｜ [X](https://x.com/CylnaNangong) ｜ [Twitch](https://www.twitch.tv/cylna_nangong)）＆ **Arena.ai Agent**
 - **致谢**：ＫＥＮくん（AviUtl ExEdit2 本体与 Plugin SDK）；AviUtl2 社区（[nctype](https://github.com/nctype)、[HexBrowns](https://github.com/HexBrowns)、[IZUisMe](https://github.com/IZUisMe) 等的开发分享）；ChatGPT / Gemini / Microsoft Copilot。
 - **许可**：MIT License（见 [LICENSE](LICENSE) 与 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）。AviUtl ExEdit2 是 ＫＥＮくん氏的软件，本项目与其相互独立。
+
+## 10. 构建与自动发布
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 packaging/build_au2pkg.py --out-dir dist
+```
+
+生成 `dist/Snow3D-v1.23.au2pkg.zip`（脚本、四份语言包及安装说明，UTF-8 / CRLF）。
+
+工作流见 [release.yml](.github/workflows/release.yml)：
+
+- **推送版本标签 `v*`**：检出标签对应的代码，测试、打包，自动创建 Release（如尚不存在）并上传安装包。
+- **发布 GitHub Release**：自动为该 Release 的标签打包并上传安装包。
+- **Actions → release → Run workflow**：输入已有标签补传；留空使用最新已发布 Release。手动执行不会创建 Release，需先建立对应 Release。
+- 发布前同步 `packaging/build_au2pkg.py` 的 `VERSION`、脚本版本、`package.ini` / `package.txt` 和文档；标签必须与包版本相同（例如 `v1.23`），否则工作流失败而不上传。
+- 使用内置 `GITHUB_TOKEN`（`contents: write`），无需额外密钥；仓库需允许 GitHub Actions 运行。安装包也保留为 workflow artifact，摘要附 SHA-256。重复运行会覆盖同名附件。
+
+本次移植来源：[VolumetricLight3D PR #15](https://github.com/CylnaNangong/AviUtl2_VolumetricLight3D/pull/15)，固定提交 `c19c9f030bc325dbe361716c2663a197e8261f4e` 的 `integrations/snow3d/`。脚本、语言包、打包配置及中日更新历史保持上游内容；没有引入体积光仓库的插件或大型沙箱资源。
