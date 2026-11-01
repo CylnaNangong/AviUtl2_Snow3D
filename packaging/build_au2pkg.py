@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
 Builds the AviUtl ExEdit2 drag-and-drop installation package (*.au2pkg.zip) for Snow3D.
-  1. Snow3D-v1.22.au2pkg.zip  (Script + Languages; snow needs no plugin)
+  1. Snow3D-v1.23.au2pkg.zip  (Script + Languages; snow needs no plugin)
 """
 import argparse
 import zipfile
 from pathlib import Path
 
-VERSION = "v1.22"
+VERSION = "v1.23"
 SCRIPT_NAME = "雪（3D）.obj2"
 LANG_SUFFIX = ".雪（3D）.aul2"
 
@@ -30,7 +30,7 @@ def build_package(repo_root: Path, out_zip: Path) -> None:
 
     with zipfile.ZipFile(out_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
         for arcname, payload in entries:
-            zi = zipfile.ZipInfo(filename=arcname, date_time=(2026, 10, 24, 12, 0, 0))
+            zi = zipfile.ZipInfo(filename=arcname, date_time=(2026, 10, 31, 12, 0, 0))
             zi.compress_type = zipfile.ZIP_DEFLATED
             zi.external_attr = 0o644 << 16
             zf.writestr(zi, payload)

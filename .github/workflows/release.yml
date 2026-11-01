@@ -1,0 +1,100 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag (blank: latest published release)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.release.tag_name || inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  upload-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve release tag
+        id: meta
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          EVENT_TAG: ${{ github.event.release.tag_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+          PUSH_TAG: ${{ github.event_name == 'push' && github.ref_name || '' }}
+        run: |
+          set -euo pipefail
+          TAG="${INPUT_TAG:-${EVENT_TAG:-${PUSH_TAG:-}}}"
+          if [ -z "${TAG}" ]; then
+            TAG="$(gh release view --repo "${REPO}" --json tagName --jq .tagName)"
+          fi
+          if [[ ! "${TAG}" =~ ^v[0-9]+\.[0-9]+([.0-9a-zA-Z_-]*)$ ]]; then
+            echo "::error::Invalid release tag '${TAG}' (expected e.g. v1.23)"
+            exit 1
+          fi
+          echo "tag=${TAG}" >> "${GITHUB_OUTPUT}"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ steps.meta.outputs.tag }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Test and build installation package
+        env:
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -v
+          python3 packaging/build_au2pkg.py --out-dir dist
+          PACKAGE="dist/Snow3D-${TAG}.au2pkg.zip"
+          if [ ! -f "${PACKAGE}" ]; then
+            echo "::error::Expected ${PACKAGE}; check VERSION in packaging/build_au2pkg.py"
+            exit 1
+          fi
+          {
+            echo "### Snow3D release package (${TAG})"
+            echo '```text'
+            sha256sum "${PACKAGE}"
+            echo '```'
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snow3D-${{ steps.meta.outputs.tag }}-au2pkg
+          path: dist/Snow3D-${{ steps.meta.outputs.tag }}.au2pkg.zip
+          if-no-files-found: error
+
+      - name: Create release for pushed tag if needed
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if ! gh release view "${TAG}" --repo "${REPO}" >/dev/null 2>&1; then
+            gh release create "${TAG}" --repo "${REPO}" --verify-tag \
+              --title "Snow3D ${TAG}" --generate-notes
+          fi
+
+      - name: Upload installation package to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release upload "${TAG}" "dist/Snow3D-${TAG}.au2pkg.zip" \
+            --repo "${REPO}" --clobber

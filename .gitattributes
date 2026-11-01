@@ -1,0 +1,5 @@
+# AviUtl script/language/package files intentionally retain upstream CRLF bytes.
+*.obj2 -text whitespace=cr-at-eol
+*.aul2 -text whitespace=cr-at-eol
+packaging/package.ini -text whitespace=cr-at-eol
+packaging/package.txt -text whitespace=cr-at-eol

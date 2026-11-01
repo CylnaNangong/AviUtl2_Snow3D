@@ -1,11 +1,11 @@
 ;===============================================================
-; Target: Snow (3D) v1.22 (雪（3D）.obj2)
+; Target: Snow (3D) v1.23 (雪（3D）.obj2)
 ; Language: English
 ; Place this file in  C:\ProgramData\aviutl2\Language\\
 ;===============================================================
 
 [Language]
-Information=Snow (3D) v1.22 English Language Pack
+Information=Snow (3D) v1.23 English Language Pack
 SubLanguage=English
 
 [Effect]
@@ -69,8 +69,16 @@ SubLanguage=English
 ログに描画モードを出力=Log Render Mode
 乱数シード=Random Seed
 
+; --- 体積光連動 -> Volumetric Light Sync ---
+体積光連動=Volumetric Light Sync
+体積光に照らされる=Lit by Volumetric Light
+受光の強さ=Light Response
+光色の染まり=Beam Color Tint
+光束外・影の減光=Shadow / Out-of-Beam Dim
+発光の広がり=Scatter Glow Size
+
 [Tips.雪（3D）]
-effect.name=True 3D particles (snow, petals, dust, embers) drawn as camera-facing billboards under AviUtl2 Camera Control.
+effect.name=True 3D particles (snow, petals, dust, embers) drawn as camera-facing billboards under AviUtl2 Camera Control, with real-time 3D light-field and shadow coupling for Volumetric Light (3D) v3.16+.
 粒子数=How many particles exist in the area at once (1-4000).
 粒径=Diameter of one particle in pixels.
 大きさのばらつき=Random variation of particle size (0-100%).
@@ -111,3 +119,8 @@ effect.name=True 3D particles (snow, petals, dust, embers) drawn as camera-facin
 奥行き順に描画=Sorts particles back-to-front by camera depth so semi-transparent overlaps blend accurately.
 ログに描画モードを出力=Logs active render mode (soft-vertex / figure-texture / flat-circle) plus particle and vertex counts on mode change.
 乱数シード=Seed value changing the deterministic initial distribution of particles.
+体積光に照らされる=Receives the shared 3D light field from Volumetric Light (3D) v3.16+ in the same scene: particles inside beams glow and automatically stay unlit inside 3D/2D cast shadows or behind foreground masks (zero overhead when no beam is active).
+受光の強さ=Illumination intensity applied to particles inside unoccluded volumetric beams (0-300%, default 120%).
+光色の染まり=How strongly illuminated particles absorb the local beam color (including multi-color stained glass): 0% keeps snow color, 100% uses full beam color.
+光束外・影の減光=Dims ambient particles outside the beam and inside 3D/2D cast shadows when an active Volumetric Light is present (0-100%; 90-100% creates pure Tyndall dust motes visible only inside lit shafts).
+発光の広がり=Forward-scattering halo size multiplier for illuminated particles (100-280%, default 135%).

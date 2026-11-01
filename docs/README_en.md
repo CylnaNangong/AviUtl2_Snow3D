@@ -1,6 +1,6 @@
 # Snow3D / 3D Snow / 雪（3D）
 
-`雪（3D）.obj2 v1.22` &nbsp;|&nbsp; `AviUtl ExEdit2 v2.1.15+` &nbsp;|&nbsp; `MIT License` &nbsp;|&nbsp; No plugin required (pure script)
+`雪（3D）.obj2 v1.23` &nbsp;|&nbsp; `AviUtl ExEdit2 v2.1.15+` &nbsp;|&nbsp; `MIT License` &nbsp;|&nbsp; No plugin required (pure script)
 
 [简体中文](../README.md) | [日本語](README_ja.md)
 
@@ -28,7 +28,7 @@ Simulates **true three-dimensional snowfall** inside AviUtl2's 3D camera space:
 
 ## 3. Installation (`.au2pkg.zip` Drag-and-Drop Supported)
 
-1. Download **`Snow3D-v1.22.au2pkg.zip`**;
+1. Download **`Snow3D-v1.23.au2pkg.zip`**;
 2. **Drag the zip onto the AviUtl2 window** — done;
 3. Manual: place `Script/雪（3D）.obj2` and `Language/*.aul2` into `C:\ProgramData\aviutl2\Script\` and `C:\ProgramData\aviutl2\Language\`.
 
@@ -47,7 +47,7 @@ Simulates **true three-dimensional snowfall** inside AviUtl2's 3D camera space:
 |---|---|---|---|
 | Snow | 粒子数 Count | 1–4000 (400) | On-screen flakes |
 | Snow | 粒径 / 大きさのばらつき | 0.1–400 (8) / 0–100 (50) | Size & variance |
-| Snow | エッジのぼかし / 雪の色 | 0–100 (0) / #ffffff | Soft edge & color |
+| Snow | エッジのぼかし / 雪の色 | 0–100 (100) / #ffffff | Soft edge & color |
 | Motion | 初速XYZ / 初速のばらつき | ±3000 (0/200/0) / 0–85 (25) | Initial velocity |
 | Motion | 重力 / 風XYZ | ±5000 (400) / ±3000 | Forces |
 | Motion | 揺れ幅 / 揺れ速さ / 回転速度 | 30 / 2 / 90 | Sway & spin |
@@ -63,14 +63,21 @@ Simulates **true three-dimensional snowfall** inside AviUtl2's 3D camera space:
 - 100% built on official Lua APIs (`obj.drawpoly` etc.) with zero host-internal access or memory probes — **official updates cannot break it**.
 - Stacks freely with `VolumetricLight3D` and `VolumetricFog3D` in the same scene (Volumetric Light v3.07+ auto-excludes snow layers from occluder candidates).
 
+## Volumetric light coupling (v1.23)
+
+Use with [VolumetricLight3D v3.16+](https://github.com/CylnaNangong/AviUtl2_VolumetricLight3D) in the same scene. The official `global` table carries the `VL3DLF v3` light field: flakes receive local beam color and illumination, which is blocked by cast shadows and foreground holdouts. Multiple emitters, object transforms and live editing-camera synchronization are supported.
+
+Expand **体積光連動**: enable (`vl_enable`, default true), strength (`vl_strength`, 0–300, default 120), tint (`vl_tint`, 0–100, default 85), outside-beam/shadow dimming (`vl_shade`, 0–100, default 30), and glow spread (`vl_glow`, 100–280, default 135).
+
+Without an active emitter the original snow rendering path is retained; standalone snow still requires no plugin. Log states: `OFF` disabled, `WAIT` no published field yet, `IDLE` withdrawn/stale field, `ON(N:M)` N emitters illuminating M particles.
+
 ## 7. Future Roadmap
 
-- Cross-script 3D optics with sister projects [`VolumetricLight3D`](https://github.com/CylnaNangong/VolumetricLight3D) and [`VolumetricFog3D`](https://github.com/CylnaNangong/VolumetricFog3D) via `VL3DBridge`: **snowflakes drifting through light shafts get tinted and highlighted in real time**.
 - Custom flake shapes (hex plates / dendrites), accumulation & melting.
 
 ## 8. Reporting Bugs
 
-- **[GitHub Issues](../../issues) is the best channel!** Please include the script version (enable 「ログに出力」 to see `雪（3D）v1.22 ...`), your AviUtl ExEdit2 version, reproduction steps, and screenshots.
+- **[GitHub Issues](../../issues) is the best channel!** Please include the script version (enable 「ログに出力」 to see `雪（3D）v1.23 ...`), your AviUtl ExEdit2 version, reproduction steps, and screenshots.
 - **Discord**: join the Japanese AviUtl2 community **「AviUtl2の情報が知りたいだろって‼」** ([invite](https://discord.gg/8qzmGY5NgQ)) and ping **南宫若馨Cylna** (`@nangongerregtcylna`, the author)!
 
 ## 9. Authors, Acknowledgements & License
